@@ -1,41 +1,25 @@
 import { useState } from "react";
 import Guessbutton from "./Guessbutton";
 
-// Object which contains difficulty statement to make it dynamic
-const difficultyRange = {
-  range1: "The number ranges from 1-10 in easy",
-  range2: "The number ranges from 1-50 in medium",
-  range3: "The number ranges from 1-100 in hard",
-};
-
-// Random number generated and stored
-let randomNumberValues = {
-  easyvalue: Math.floor(Math.random() * 10) + 1,
-  mediumvalue: Math.floor(Math.random() * 50) + 1,
-  hardvalue: Math.floor(Math.random() * 100) + 1,
-};
+const difficultyLevels = [
+  { difficulty: "easy", range: 10 },
+  { difficulty: "medium", range: 50 },
+  { difficulty: "hard", range: 100 },
+];
 
 function Radiobox({ setRandomNumber }) {
   const [message, setMessage] = useState("");
+  const [selected, setSelected] = useState(difficultyLevels[0].difficulty);
 
-  // FUNCTIONS FOR SETTING DIFFICULTY
-  // EASY FUNCTION
-  function easy() {
-    setRandomNumber(randomNumberValues.easyvalue);
-    setMessage(difficultyRange.range1);
+  function selectDifficulty(difficultyOption) {
+    setRandomNumber(
+      Math.floor(Math.random() * Number(difficultyOption.range)) + 1,
+    );
+    setMessage(
+      `The number ranges from 1-${difficultyOption.range} in ${difficultyOption.difficulty}`,
+    );
   }
 
-  // MEDIUM FUNCTION
-  function medium() {
-    setRandomNumber(randomNumberValues.mediumvalue);
-    setMessage(difficultyRange.range2);
-  }
-
-  // DFFICULT FUNCTION
-  function hard() {
-    setRandomNumber(randomNumberValues.hardvalue);
-    setMessage(difficultyRange.range3);
-  }
   return (
     <div
       className="card bg-dark border-warning p-4 mb-4 text-center"
@@ -44,37 +28,24 @@ function Radiobox({ setRandomNumber }) {
       <h2 className="text-warning fw-bold mb-3">⚡ Choose Difficulty</h2>
 
       <div className="d-flex justify-content-center gap-4 mb-3">
-        <div className="form-check">
-          <input
-            className="form-check-input"
-            type="radio"
-            name="Difficulty"
-            onClick={easy}
-          />
-          <label className="form-check-label text-success fw-bold">Easy</label>
-        </div>
-
-        <div className="form-check">
-          <input
-            className="form-check-input"
-            type="radio"
-            name="Difficulty"
-            onClick={medium}
-          />
-          <label className="form-check-label text-warning fw-bold">
-            Medium
-          </label>
-        </div>
-
-        <div className="form-check">
-          <input
-            className="form-check-input"
-            type="radio"
-            name="Difficulty"
-            onClick={hard}
-          />
-          <label className="form-check-label text-danger fw-bold">Hard</label>
-        </div>
+        {difficultyLevels.map((option, index) => (
+          <div key={option.difficulty} className="form-check">
+            <input
+              className="form-check-input"
+              type="radio"
+              name="Difficulty"
+              value={option.difficulty}
+              checked={selected === option.difficulty}
+              onChange={() => {
+                setSelected(option.difficulty);
+                selectDifficulty(option);
+              }}
+            />
+            <label className="form-check-label ms-2 text-white">
+              {option.difficulty}
+            </label>
+          </div>
+        ))}
       </div>
 
       {message && (
@@ -85,18 +56,3 @@ function Radiobox({ setRandomNumber }) {
 }
 
 export default Radiobox;
-
-// return (
-//   <div
-//     className="card bg-dark border-warning p-4 mb-4 text-center"
-//     style={{ width: "400px" }}
-//   >
-//     {/*  */}
-//     <p>{message}</p>
-//     {/*  */}
-//     <h2 className="text-warning fw-bold mb-3"> ⚡Choose difficulty : </h2>
-//     <input type="radio" name="Difficulty" onClick={easy} /> Easy <br />
-//     <input type="radio" name="Difficulty" onClick={medium} /> Medium <br />
-//     <input type="radio" name="Difficulty" onClick={hard} /> Hard <br />
-//   </div>
-// );

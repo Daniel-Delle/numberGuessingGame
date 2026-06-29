@@ -5,9 +5,8 @@ import Radiobox from "./Radiobox";
 function Guessbutton() {
   const [randomNumber, setRandomNumber] = useState(0);
 
-  // state declarations
   // userInput state
-  const [inputValue, setInputValue] = useState(" ");
+  const [inputValue, setInputValue] = useState("");
 
   // guess button state
   const [result, setResult] = useState("");
@@ -34,7 +33,6 @@ function Guessbutton() {
   // Function to reveal answer which will be set to result state
   function answer() {
     setReveal(`The number is ${randomNumber}.`);
-    // return <p>{reveal}</p>
   }
 
   return (
